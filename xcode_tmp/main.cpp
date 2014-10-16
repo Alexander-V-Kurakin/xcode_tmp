@@ -10,6 +10,46 @@
 #include <iomanip>
 #include <string>
 
+struct D {
+    std::string s = "structure D";
+public:
+    std::string gets();
+    std::string gets_p();
+protected:
+    std::string d = "protected d";
+};
+
+std::string D::gets()
+{
+    return s;
+}
+
+std::string D::gets_p()
+{
+    return d;
+}
+
+
+struct E {
+    std::string s = "structure E";
+public:
+    std::string gets();
+    std::string gets_p();
+protected:
+    std::string e = "protected e";
+};
+
+std::string E::gets()
+{
+    return s;
+}
+
+std::string E::gets_p()
+{
+    return e;
+}
+
+
 class C {
     std::string s = "class C";
     int C = 2;
@@ -77,15 +117,21 @@ int main(int argc, const char * argv[]) {
     B b;
     C c;
     
-    std::cout << a.gets() << " ";
-    std::cout << b.gets() << " ";
+    D d;
+    E e;
+    
+    std::cout << a.gets() << "\t";
+    std::cout << b.gets() << "\t";
     std::cout << c.gets() << std::endl;
     
-    std::cout << a.get() << " ";
-    std::cout << b.get() << " ";
+    std::cout << a.get() << "\t";
+    std::cout << b.get() << "\t";
     std::cout << c.get() << std::endl;
     
-    std::cout << std::hex << a.get() << std::endl;
+    std::cout << d.gets() << "\t";
+    std::cout << d.gets_p() << std::endl;
+    std::cout << e.gets() << "\t";
+    std::cout << e.gets_p() << std::endl;
     
     return 0;
 }
