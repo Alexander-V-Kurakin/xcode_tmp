@@ -111,14 +111,11 @@ std::string A::gets()
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    std::cout << "Hello, World!\n";
+    std::cout << "Hello, World!\n\n";
     
     A a;
     B b;
     C c;
-    
-    D d;
-    E e;
     
     std::cout << a.gets() << "\t";
     std::cout << b.gets() << "\t";
@@ -126,7 +123,10 @@ int main(int argc, const char * argv[]) {
     
     std::cout << a.get() << "\t";
     std::cout << b.get() << "\t";
-    std::cout << c.get() << std::endl;
+    std::cout << c.get() << "\n\n";
+    
+    D d;
+    E e;
     
     std::cout << d.gets() << "\t";
     std::cout << d.gets_p() << std::endl;
