@@ -11,12 +11,12 @@
 #include <string>
 
 struct D {
-    std::string s = "structure D";
-public:
     std::string gets();
     std::string gets_p();
+private:
+    std::string s = "structure D";
 protected:
-    std::string d = "protected d";
+    std::string p = "protected d";
 };
 
 std::string D::gets()
@@ -26,17 +26,17 @@ std::string D::gets()
 
 std::string D::gets_p()
 {
-    return d;
+    return p;
 }
 
 
 struct E {
-    std::string s = "structure E";
-public:
     std::string gets();
     std::string gets_p();
+private:
+    std::string s = "structure E";
 protected:
-    std::string e = "protected e";
+    std::string p = "protected e";
 };
 
 std::string E::gets()
@@ -46,13 +46,13 @@ std::string E::gets()
 
 std::string E::gets_p()
 {
-    return e;
+    return p;
 }
 
 
 class C {
     std::string s = "class C";
-    int C = 2;
+    int c = 2;
 public:
     int get();
     std::string gets();
@@ -60,7 +60,7 @@ public:
 
 int C::get()
 {
-    return C;
+    return c;
 }
 
 std::string C::gets()
@@ -71,7 +71,7 @@ std::string C::gets()
 
 class B {
     std::string s = "class B";
-    int B = 1;
+    int b = 1;
 public:
     int get();
     std::string gets();
@@ -79,7 +79,7 @@ public:
 
 int B::get()
 {
-    return B;
+    return b;
 }
 
 std::string B::gets()
@@ -89,18 +89,32 @@ std::string B::gets()
 
 
 class A {
-    std::string s = "class A";
-    int A = 0;
+    std::string s;
+    int a;
 public:
+    A();
+    A(std::string, int);
+    
     int get();
     std::string gets();
     
     friend int B::get();
 };
 
+A::A()
+{
+    this->a = 0;
+}
+
+A::A(std::string s, int a)
+{
+    this->a = a;
+    this->s = s;
+}
+
 int A::get()
 {
-    return A;
+    return a;
 }
 
 std::string A::gets()
@@ -113,25 +127,18 @@ int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n\n";
     
-    A a;
+    A a("class A", 3);
     B b;
     C c;
     
-    std::cout << a.gets() << "\t";
-    std::cout << b.gets() << "\t";
-    std::cout << c.gets() << std::endl;
-    
-    std::cout << a.get() << "\t";
-    std::cout << b.get() << "\t";
-    std::cout << c.get() << "\n\n";
+    std::cout << a.gets() << "\t" << b.gets() << "\t" << c.gets() << std::endl;
+    std::cout << a.get() << "\t" << b.get() << "\t" << c.get() << "\n\n";
     
     D d;
     E e;
     
-    std::cout << d.gets() << "\t";
-    std::cout << d.gets_p() << std::endl;
-    std::cout << e.gets() << "\t";
-    std::cout << e.gets_p() << std::endl;
+    std::cout << d.gets() << "\t" << d.gets_p() << std::endl;
+    std::cout << e.gets() << "\t" << e.gets_p() << std::endl;
     
     return 0;
 }
