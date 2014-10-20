@@ -10,6 +10,17 @@
 #include <iomanip>
 #include <string>
 
+void g(int a, int b = 0, char c = 'a')
+{
+    return;
+}
+
+void g(char a)
+{
+    return;
+}
+
+
 struct D {
     D();
     std::string gets();
@@ -157,6 +168,9 @@ int main(int argc, const char * argv[]) {
     
     std::cout << e1[0].gets() << "\t" << e1[0].gets_p() << std::endl;
     std::cout << e1[1].gets() << "\t" << e1[1].gets_p() << std::endl;
+    
+    g(1, 1);
+    g('b');
     
     return 0;
 }
