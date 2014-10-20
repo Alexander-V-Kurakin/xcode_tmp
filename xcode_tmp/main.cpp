@@ -11,13 +11,20 @@
 #include <string>
 
 struct D {
+    D();
     std::string gets();
     std::string gets_p();
 private:
-    std::string s = "structure D";
+    std::string s;
 protected:
-    std::string p = "protected d";
+    std::string p;
 };
+
+D::D()
+{
+    this->s = "structure D";
+    this->p = "protected d";
+}
 
 std::string D::gets()
 {
@@ -31,13 +38,20 @@ std::string D::gets_p()
 
 
 struct E {
+    E(std::string, std::string);
     std::string gets();
     std::string gets_p();
 private:
-    std::string s = "structure E";
+    std::string s;
 protected:
-    std::string p = "protected e";
+    std::string p;
 };
+
+E::E(std::string s, std::string p)
+{
+    this->s = s;
+    this->p = p;
+}
 
 std::string E::gets()
 {
@@ -97,8 +111,6 @@ public:
     
     int get();
     std::string gets();
-    
-    friend int B::get();
 };
 
 A::A()
@@ -127,7 +139,9 @@ int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n\n";
     
-    A a("class A", 3);
+    int any_value = 4;
+    
+    A a("class A", any_value);
     B b;
     C c;
     
@@ -135,10 +149,14 @@ int main(int argc, const char * argv[]) {
     std::cout << a.get() << "\t" << b.get() << "\t" << c.get() << "\n\n";
     
     D d;
-    E e;
+    E e("structure E", "protected e");
+    E e1[2] = {E("structure E", "protected e1"), E("structure E", "protected e2")};
     
     std::cout << d.gets() << "\t" << d.gets_p() << std::endl;
     std::cout << e.gets() << "\t" << e.gets_p() << std::endl;
+    
+    std::cout << e1[0].gets() << "\t" << e1[0].gets_p() << std::endl;
+    std::cout << e1[1].gets() << "\t" << e1[1].gets_p() << std::endl;
     
     return 0;
 }
