@@ -10,17 +10,6 @@
 #include <iomanip>
 #include <string>
 
-void g(int a, int b = 0, char c = 'a')
-{
-    return;
-}
-
-void g(char a)
-{
-    return;
-}
-
-
 struct D {
     D();
     std::string gets();
@@ -39,18 +28,18 @@ D::D()
 
 std::string D::gets()
 {
-    return s;
+    return this->s;
 }
 
 std::string D::gets_p()
 {
-    return p;
+    return this->p;
 }
 
 
 struct E {
     E(std::string, std::string);
-    std::string gets();
+    const std::string gets();
     std::string gets_p();
 private:
     std::string s;
@@ -64,14 +53,14 @@ E::E(std::string s, std::string p)
     this->p = p;
 }
 
-std::string E::gets()
+const std::string E::gets()
 {
-    return s;
+    return this->s;
 }
 
 std::string E::gets_p()
 {
-    return p;
+    return this->p;
 }
 
 
@@ -85,12 +74,12 @@ public:
 
 int C::get()
 {
-    return c;
+    return this->c;
 }
 
 std::string C::gets()
 {
-    return s;
+    return this->s;
 }
 
 
@@ -104,18 +93,19 @@ public:
 
 int B::get()
 {
-    return b;
+    return this->b;
 }
 
 std::string B::gets()
 {
-    return s;
+    return this->s;
 }
 
 
 class A {
     std::string s;
     int a;
+    const int b;
 public:
     A();
     A(std::string, int);
@@ -124,31 +114,31 @@ public:
     std::string gets();
 };
 
-A::A()
+A::A() : b(10)
 {
+    this->s = "class A";
     this->a = 0;
 }
 
-A::A(std::string s, int a)
+A::A(std::string s, int a) : s(s), a(a), b(11)
 {
-    this->a = a;
-    this->s = s;
 }
 
 int A::get()
 {
-    return a;
+    return this->a + this->b;
 }
 
 std::string A::gets()
 {
-    return s;
+    return this->s;
 }
 
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    std::cout << "Hello, World!\n\n";
+    char *cp = const_cast<char*>("Hello, C++11 World!\n");
+    std::cout << cp << std::endl;
     
     int any_value = 4;
     
@@ -161,16 +151,18 @@ int main(int argc, const char * argv[]) {
     
     D d;
     E e("structure E", "protected e");
-    E e1[2] = {E("structure E", "protected e1"), E("structure E", "protected e2")};
+    E e1[2] = {E("structure E of e1[0]", "protected e1"),
+               E("structure E of e1[1]", "protected e1")};
     
     std::cout << d.gets() << "\t" << d.gets_p() << std::endl;
     std::cout << e.gets() << "\t" << e.gets_p() << std::endl;
     
     std::cout << e1[0].gets() << "\t" << e1[0].gets_p() << std::endl;
-    std::cout << e1[1].gets() << "\t" << e1[1].gets_p() << std::endl;
+    std::cout << e1[1].gets() << "\t" << e1[1].gets_p() << "\n\n";
     
-    g(1, 1);
-    g('b');
+    e = e1[1];
+    
+    std::cout << e.gets() << std::endl;
     
     return 0;
 }

@@ -232,6 +232,7 @@
 				C3D4DA5119E87FA3002A4558 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
