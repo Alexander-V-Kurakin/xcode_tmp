@@ -12,8 +12,8 @@
 
 struct D {
     D();
-    std::string gets();
-    std::string gets_p();
+    std::string gets() const;
+    std::string gets_p() const;
 private:
     std::string s;
 protected:
@@ -26,12 +26,12 @@ D::D()
     this->p = "protected d";
 }
 
-std::string D::gets()
+std::string D::gets() const
 {
     return this->s;
 }
 
-std::string D::gets_p()
+std::string D::gets_p() const
 {
     return this->p;
 }
@@ -39,8 +39,8 @@ std::string D::gets_p()
 
 struct E {
     E(std::string, std::string);
-    const std::string gets();
-    std::string gets_p();
+    const std::string gets() const;
+    std::string gets_p() const;
 private:
     std::string s;
 protected:
@@ -53,12 +53,12 @@ E::E(std::string s, std::string p)
     this->p = p;
 }
 
-const std::string E::gets()
+const std::string E::gets() const
 {
     return this->s;
 }
 
-std::string E::gets_p()
+std::string E::gets_p() const
 {
     return this->p;
 }
@@ -68,16 +68,16 @@ class C {
     std::string s = "class C";
     int c = 2;
 public:
-    int get();
-    std::string gets();
+    int get() const;
+    std::string gets() const;
 };
 
-int C::get()
+int C::get() const
 {
     return this->c;
 }
 
-std::string C::gets()
+std::string C::gets() const
 {
     return this->s;
 }
@@ -87,16 +87,16 @@ class B {
     std::string s = "class B";
     int b = 1;
 public:
-    int get();
-    std::string gets();
+    int get() const;
+    std::string gets() const;
 };
 
-int B::get()
+int B::get() const
 {
     return this->b;
 }
 
-std::string B::gets()
+std::string B::gets() const
 {
     return this->s;
 }
@@ -106,12 +106,13 @@ class A {
     std::string s;
     int a;
     const int b;
+    static const int c = 100;
 public:
     A();
-    A(std::string, int);
+    A(std::string, int, int);
     
-    int get();
-    std::string gets();
+    int get() const;
+    std::string gets() const;
 };
 
 A::A() : b(10)
@@ -120,16 +121,18 @@ A::A() : b(10)
     this->a = 0;
 }
 
-A::A(std::string s, int a) : s(s), a(a), b(11)
+A::A(std::string s, int a, int x = 0) : b(x)
 {
+    this->s = s;
+    this->a = a;
 }
 
-int A::get()
+int A::get() const
 {
-    return this->a + this->b;
+    return a + b + c;
 }
 
-std::string A::gets()
+std::string A::gets() const
 {
     return this->s;
 }
@@ -140,9 +143,9 @@ int main(int argc, const char * argv[]) {
     char *cp = const_cast<char*>("Hello, C++11 World!\n");
     std::cout << cp << std::endl;
     
-    int any_value = 4;
+    int any_value(4);
     
-    A a("class A", any_value);
+    A a("class A", any_value, 11);
     B b;
     C c;
     
