@@ -12,8 +12,8 @@
 
 struct D {
     D();
-    std::string gets() const;
-    std::string gets_p() const;
+    std::string gets() const {return this->s;}
+    std::string gets_p() const {return this->p;}
 private:
     std::string s;
 protected:
@@ -26,21 +26,11 @@ D::D()
     this->p = "protected d";
 }
 
-std::string D::gets() const
-{
-    return this->s;
-}
-
-std::string D::gets_p() const
-{
-    return this->p;
-}
-
 
 struct E {
     E(std::string, std::string);
-    const std::string gets() const;
-    std::string gets_p() const;
+    const std::string gets() const {return this->s;}
+    std::string gets_p() const {return this->p;}
 private:
     std::string s;
 protected:
@@ -53,53 +43,23 @@ E::E(std::string s, std::string p)
     this->p = p;
 }
 
-const std::string E::gets() const
-{
-    return this->s;
-}
-
-std::string E::gets_p() const
-{
-    return this->p;
-}
-
 
 class C {
     std::string s = "class C";
     int c = 2;
 public:
-    int get() const;
-    std::string gets() const;
+    int get() const {return this->c;}
+    std::string gets() const {return this->s;}
 };
-
-int C::get() const
-{
-    return this->c;
-}
-
-std::string C::gets() const
-{
-    return this->s;
-}
 
 
 class B {
     std::string s = "class B";
     int b = 1;
 public:
-    int get() const;
-    std::string gets() const;
+    int get() const {return this->b;}
+    std::string gets() const {return this->s;}
 };
-
-int B::get() const
-{
-    return this->b;
-}
-
-std::string B::gets() const
-{
-    return this->s;
-}
 
 
 class A {
@@ -111,8 +71,8 @@ public:
     A();
     A(std::string, int, int);
     
-    int get() const;
-    std::string gets() const;
+    int get() const {return a + b + c;}
+    std::string gets() const {return this->s;}
 };
 
 A::A() : b(10)
@@ -125,16 +85,6 @@ A::A(std::string s, int a, int x = 0) : b(x)
 {
     this->s = s;
     this->a = a;
-}
-
-int A::get() const
-{
-    return a + b + c;
-}
-
-std::string A::gets() const
-{
-    return this->s;
 }
 
 
