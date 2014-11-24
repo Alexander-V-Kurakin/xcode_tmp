@@ -57,8 +57,10 @@ public:
 
 class B {
     std::string s = "class B";
-    int b = 1;
+    int b;
 public:
+    B(int i){b = i;}
+    
     int get() const {return this->b;}
     std::string gets() const {return this->s;}
 };
@@ -84,13 +86,13 @@ public:
     std::string gets_C() const {return this->cc.gets();}
 };
 
-A::A() : b(10)
+A::A() : b(10), cb(b*10)
 {
     this->s = "class A";
     this->a = 0;
 }
 
-A::A(std::string s, int a, int x = 0) : b(x)
+A::A(std::string s, int a, int x = 0) : b(x), cb(x)
 {
     this->s = s;
     this->a = a;
@@ -101,17 +103,19 @@ class A1 : B, public A {
     const int h = 300;
     static int g;
     int f;
+    int h1;
 public:
     A1(std::string);
     
     static std::string a1[];    
     
     int get() const {return h;}
+    int get_h1() const {return h1;}
     int get_h() const {return A::get_h();}
     std::string gets_B() const {return this->B::gets();}
 };
 
-A1::A1(std::string s) : A(s, 11, 22)
+A1::A1(std::string s) : h1(333), B(222), A(s, 11, 22)
 {
     f = 0;
 }
@@ -130,11 +134,11 @@ int main(int argc, const char * argv[]) {
     
     static A a("class A", any_value, 11);
     A1 a1("inherited from A");
-    B b;
+    B b(444);
     C c;
     
     std::cout << a.gets() << "\t" << b.gets() << "\t" << c.gets() << std::endl;
-    std::cout << a1.A::gets() << std::endl;
+    std::cout << a1.A::gets() << "\t" << a1.get_h1() << "\t" << a.cb.get() << std::endl;
     std::cout << a.get() << "\t" << b.get() << "\t" << c.get() << "\n\n";
     
     TRACE(a1.get());
