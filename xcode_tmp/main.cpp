@@ -10,6 +10,8 @@
 #include <iomanip>
 #include <string>
 
+#define TRACE(x) (std::cout << #x << " = " << x << std::endl)
+
 struct D {
     D();
     std::string gets() const {return this->s;}
@@ -67,12 +69,19 @@ class A {
     int a;
     const int b;
     static const int c = 100;
+    const int h = 200;
+    
+    C cc;
 public:
     A();
     A(std::string, int, int);
     
+    B cb;
+    
     int get() const {return a + b + c;}
+    int get_h() const {return h;}
     std::string gets() const {return this->s;}
+    std::string gets_C() const {return this->cc.gets();}
 };
 
 A::A() : b(10)
@@ -88,19 +97,49 @@ A::A(std::string s, int a, int x = 0) : b(x)
 }
 
 
+class A1 : B, public A {
+    const int h = 300;
+    static int g;
+    int f;
+public:
+    A1(std::string);
+    
+    static std::string a1[];    
+    
+    int get() const {return h;}
+    int get_h() const {return A::get_h();}
+    std::string gets_B() const {return this->B::gets();}
+};
+
+A1::A1(std::string s) : A(s, 11, 22)
+{
+    f = 0;
+}
+
+int A1::g = 22;
+
+std::string A1::a1[] = {"one", "two", "three"};
+
+
 int main(int argc, const char * argv[]) {
-    // insert code here...
+    // insert code here...    
     char *cp = const_cast<char*>("Hello, C++11 World!\n");
     std::cout << cp << std::endl;
     
     int any_value(4);
     
-    A a("class A", any_value, 11);
+    static A a("class A", any_value, 11);
+    A1 a1("inherited from A");
     B b;
     C c;
     
     std::cout << a.gets() << "\t" << b.gets() << "\t" << c.gets() << std::endl;
+    std::cout << a1.A::gets() << std::endl;
     std::cout << a.get() << "\t" << b.get() << "\t" << c.get() << "\n\n";
+    
+    TRACE(a1.get());
+    TRACE(a1.get_h());
+    std::cout << std::endl;
     
     D d;
     E e("structure E", "protected e");
@@ -115,7 +154,16 @@ int main(int argc, const char * argv[]) {
     
     e = e1[1];
     
-    std::cout << e.gets() << std::endl;
+    std::cout << e.gets() << "\n\n";
+    
+    TRACE(any_value);
+    TRACE(e.gets_p());
+    std::cout << std::endl;;
+    
+    std::cout << "Embedded\t" << a.cb.gets() << "\t" << a.gets_C() << std::endl;
+    TRACE(sizeof(A1));
+    TRACE(sizeof(A));
+    TRACE(a1.gets_B());
     
     return 0;
 }
