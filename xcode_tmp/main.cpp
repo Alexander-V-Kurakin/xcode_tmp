@@ -82,20 +82,26 @@ public:
     
     int get() const {return a + b + c;}
     int get_h() const {return h;}
+    int get_pf() const {return pf;}
     std::string gets() const {return this->s;}
     std::string gets_C() const {return this->cc.gets();}
+protected:
+    int pf;
 };
 
 A::A() : b(10), cb(b*10)
 {
     this->s = "class A";
     this->a = 0;
+    this->pf = 5;
 }
 
 A::A(std::string s, int a, int x = 0) : b(x), cb(x)
 {
     this->s = s;
     this->a = a;
+    
+    this->pf = 5;
 }
 
 
@@ -139,6 +145,7 @@ int main(int argc, const char * argv[]) {
     
     std::cout << a.gets() << "\t" << b.gets() << "\t" << c.gets() << std::endl;
     std::cout << a1.A::gets() << "\t" << a1.get_h1() << "\t" << a.cb.get() << std::endl;
+    TRACE(a1.get_pf());
     std::cout << a.get() << "\t" << b.get() << "\t" << c.get() << "\n\n";
     
     TRACE(a1.get());
