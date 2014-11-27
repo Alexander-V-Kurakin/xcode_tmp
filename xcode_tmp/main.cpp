@@ -131,6 +131,30 @@ int A1::g = 22;
 std::string A1::a1[] = {"one", "two", "three"};
 
 
+class F {
+    std::string s = "class F";
+    int a;
+public:
+    F(){
+        a = 0;
+        std::cout << s << " constructor is called" << std::endl;
+    }
+    
+    void set_a(int n){ a = n;}
+    int get_a() const {return a;}
+};
+
+
+class G : public F {
+    std::string s = "class G";
+public:
+    G(){ std::cout << s << " constructor is called" << std::endl; }
+};
+
+
+void f1(F& f){f.set_a(1000);}
+
+
 int main(int argc, const char * argv[]) {
     // insert code here...    
     char *cp = const_cast<char*>("Hello, C++11 World!\n");
@@ -175,6 +199,26 @@ int main(int argc, const char * argv[]) {
     TRACE(sizeof(A1));
     TRACE(sizeof(A));
     TRACE(a1.gets_B());
+    std::cout << std::endl;
+    
+    F f;
+    std::cout << std::endl;
+    G g;
+    std::cout << std::endl;
+    
+    f1(g);
+    TRACE(f.get_a());
+    TRACE(g.get_a());
+    std::cout << std::endl;
+    
+    f.set_a(2000);
+    TRACE(f.get_a());
+    TRACE(g.get_a());
+    std::cout << std::endl;
+    
+    g.F::set_a(3000);
+    TRACE(f.get_a());
+    TRACE(g.get_a());
     
     return 0;
 }
