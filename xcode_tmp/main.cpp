@@ -140,15 +140,30 @@ public:
         std::cout << s << " constructor is called" << std::endl;
     }
     
-    void set_a(int n){ a = n;}
+    virtual void set_a(int n){
+        a = n+111;
+        std::cout << s << ": " << a << std::endl;
+    }
+    
     int get_a() const {return a;}
 };
 
 
 class G : public F {
     std::string s = "class G";
+    int a;
 public:
-    G(){ std::cout << s << " constructor is called" << std::endl; }
+    G(){
+        a = 4000;
+        std::cout << s << " constructor is called" << std::endl;
+    }
+    
+    void set_a(int n){
+        a = n+222;
+        std::cout << s << ": " << a << std::endl;
+    }
+    
+    int get_a() const {return a;}
 };
 
 
@@ -208,17 +223,9 @@ int main(int argc, const char * argv[]) {
     
     f1(g);
     TRACE(f.get_a());
+    TRACE(g.F::get_a());
     TRACE(g.get_a());
     std::cout << std::endl;
-    
-    f.set_a(2000);
-    TRACE(f.get_a());
-    TRACE(g.get_a());
-    std::cout << std::endl;
-    
-    g.F::set_a(3000);
-    TRACE(f.get_a());
-    TRACE(g.get_a());
     
     return 0;
 }
