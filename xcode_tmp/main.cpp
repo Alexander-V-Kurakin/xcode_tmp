@@ -22,10 +22,17 @@ public:
         std::cout << s << " constructor is called\t" << a << std::endl;
     }
     
+    virtual ~F() = 0;
+    
     virtual void set_a(int n) = 0;
     
     int get_a() const {return a;}
 };
+
+F::~F()
+{
+    std::cout << s << " destructor is called\t" << std::endl;
+}
 
 
 class G : public F {
@@ -87,6 +94,10 @@ int main(int argc, const char * argv[]) {
     TRACE(h.G::F::get_a());
     TRACE(h.G::get_a());
     TRACE(h.get_a());
+    std::cout << "\n\n";
+    
+    F* f = new H;
+    delete f;
     
     return 0;
 }
