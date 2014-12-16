@@ -74,11 +74,18 @@ public:
 void f1(F& f){f.set_a(1000);}
 
 
+template <class T> void swap( T& x, T& y)
+{
+    T t = x; x = y; y = t;
+}
+
+
 int main(int argc, const char * argv[]) {
     // insert code here...    
     char *cp = const_cast<char*>("Hello, C++11 World!\n");
     std::cout << cp << std::endl;
     
+    {
     G g;
     std::cout << std::endl;
     
@@ -94,10 +101,27 @@ int main(int argc, const char * argv[]) {
     TRACE(h.G::F::get_a());
     TRACE(h.G::get_a());
     TRACE(h.get_a());
-    std::cout << "\n\n";
+    std::cout << std::endl;
     
     F* f = new H;
     delete f;
+    std::cout << std::endl;
+    }
+    std::cout << std::endl;
+    
+    {
+    int x = 1, y = 2;
+    std::cout << "x = " << x << "\ty = " << y << std::endl;
+    swap(x, y);
+    std::cout << "x = " << x << "\ty = " << y << std::endl;
+    }
+    
+    {
+    float x = 1.1, y = 2.2;
+    std::cout << "x = " << x << "\ty = " << y << std::endl;
+    swap(x, y);
+    std::cout << "x = " << x << "\ty = " << y << std::endl;
+    }
     
     return 0;
 }
