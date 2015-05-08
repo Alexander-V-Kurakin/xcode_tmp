@@ -44,6 +44,8 @@ public:
         std::cout << s << " constructor is called\t" << a << std::endl;
     }
     
+    ~G(){std::cout << s << " destructor is called\t" << std::endl;}
+    
     void set_a(int n){
         a = n+2;
         std::cout << s << ": " << a << std::endl;
@@ -62,6 +64,8 @@ public:
         std::cout << s << " constructor is called\t" << a << std::endl;
     }
     
+    ~H(){std::cout << s << " destructor is called\t" << std::endl;}
+    
     void set_a(int n){
         a = n+3;
         std::cout << s << ": " << a << std::endl;
@@ -74,15 +78,30 @@ public:
 void f1(F& f){f.set_a(1000);}
 
 
-template <class T> void swap( T& x, T& y)
+template <typename T> void swap( T& x, T& y)
 {
     T t = x; x = y; y = t;
 }
 
 
+template <typename T>
+class I {
+    T a;
+public:
+    I(T n): a(n){};
+    T get_a() const;
+};
+
+template <typename T>
+T I<T>::get_a() const
+{
+    return a;
+}
+
+
 int main(int argc, const char * argv[]) {
     // insert code here...    
-    char *cp = const_cast<char*>("Hello, C++11 World!\n");
+    char *cp = const_cast<char*>("Hello, C++14 World!\n");
     std::cout << cp << std::endl;
     
     {
@@ -122,6 +141,12 @@ int main(int argc, const char * argv[]) {
     swap(x, y);
     std::cout << "x = " << x << "\ty = " << y << std::endl;
     }
+    std::cout << std::endl;
+    
+    I<float> i(3.3);
+    TRACE(i.get_a());
+    I<int> j(4);
+    TRACE(j.get_a());
     
     return 0;
 }
