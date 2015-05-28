@@ -147,6 +147,22 @@ int main(int argc, const char * argv[]) {
     TRACE(i.get_a());
     I<int> j(4);
     TRACE(j.get_a());
+    std::cout << std::endl;
+    
+    {
+    int i = 100;
+    std::cout.flags(std::ios_base::left | std::ios_base::hex | std::ios_base::showbase);
+    std::cout.width(15);
+    std::cout << i << std::dec << std::right << i << std::endl;
+        
+        
+    float f = 1234.56789;
+    std::cout.flags(std::ios_base::showpos);
+    std::cout.precision(15);
+    std::cout << std::scientific << f << std::endl;
+    std::cout << std::fixed << f << std::endl;
+    }
+    std::cout << std::endl;
     
     return 0;
 }
