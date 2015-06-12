@@ -13,71 +13,6 @@
 #define TRACE(x) (std::cout << #x << " = " << x << std::endl)
 
 
-class F {
-    std::string s = "class F";
-    int a;
-public:
-    F(){
-        a = 0;
-        std::cout << s << " constructor is called\t" << a << std::endl;
-    }
-    
-    virtual ~F() = 0;
-    
-    virtual void set_a(int n) = 0;
-    
-    int get_a() const {return a;}
-};
-
-F::~F()
-{
-    std::cout << s << " destructor is called\t" << std::endl;
-}
-
-
-class G : public F {
-    std::string s = "class G";
-    int a;
-public:
-    G(){
-        a = 4000;
-        std::cout << s << " constructor is called\t" << a << std::endl;
-    }
-    
-    ~G(){std::cout << s << " destructor is called\t" << std::endl;}
-    
-    void set_a(int n){
-        a = n+2;
-        std::cout << s << ": " << a << std::endl;
-    }
-    
-    int get_a() const {return a;}
-};
-
-
-class H : public G {
-    std::string s = "class H";
-    int a;
-public:
-    H(){
-        a = 6000;
-        std::cout << s << " constructor is called\t" << a << std::endl;
-    }
-    
-    ~H(){std::cout << s << " destructor is called\t" << std::endl;}
-    
-    void set_a(int n){
-        a = n+3;
-        std::cout << s << ": " << a << std::endl;
-    }
-    
-    int get_a() const {return a;}
-};
-
-
-void f1(F& f){f.set_a(1000);}
-
-
 template <typename T> void swap( T& x, T& y)
 {
     T t = x; x = y; y = t;
@@ -99,34 +34,32 @@ T I<T>::get_a() const
 }
 
 
+class Base {
+public:
+    virtual std::string vf() const = 0;
+    virtual ~Base(){};
+};
+
+class Derived1 : virtual public Base {
+public:
+    std::string vf() const {return "Derived1";};
+};
+
+class Derived2 : virtual public Base {
+public:
+    std::string vf() const {return "Derived1";};
+};
+
+class MI : public Derived1, public Derived2 {
+public:
+    std::string vf() const {return Derived1::vf();}
+};
+
+
 int main(int argc, const char * argv[]) {
-    // insert code here...    
+    // insert code here...
     char *cp = const_cast<char*>("Hello, C++14 World!\n");
     std::cout << cp << std::endl;
-    
-    {
-    G g;
-    std::cout << std::endl;
-    
-    f1(g);
-    TRACE(g.F::get_a());
-    TRACE(g.get_a());
-    std::cout << std::endl;
-    
-    H h;
-    std::cout << std::endl;
-    
-    f1(h);
-    TRACE(h.G::F::get_a());
-    TRACE(h.G::get_a());
-    TRACE(h.get_a());
-    std::cout << std::endl;
-    
-    F* f = new H;
-    delete f;
-    std::cout << std::endl;
-    }
-    std::cout << std::endl;
     
     {
     int x = 1, y = 2;
@@ -149,19 +82,8 @@ int main(int argc, const char * argv[]) {
     TRACE(j.get_a());
     std::cout << std::endl;
     
-    {
-    int i = 100;
-    std::cout.flags(std::ios_base::left | std::ios_base::hex | std::ios_base::showbase);
-    std::cout.width(15);
-    std::cout << i << std::dec << std::right << i << std::endl;
-        
-        
-    float f = 1234.56789;
-    std::cout.flags(std::ios_base::showpos);
-    std::cout.precision(15);
-    std::cout << std::scientific << f << std::endl;
-    std::cout << std::fixed << f << std::endl;
-    }
+    MI mi;
+    TRACE(mi.vf());
     std::cout << std::endl;
     
     return 0;
