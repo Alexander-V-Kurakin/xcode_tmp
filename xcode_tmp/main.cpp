@@ -81,10 +81,24 @@ public:
 };
 
 
+class Base1 {
+public:
+    virtual void what() const {std::cout << "class Base1" << std::endl;}
+};
+
+class Derived3 : public Base1 {
+public:
+    void what() const {std::cout << "class Derived3" << std::endl;}
+};
+
+void f(){throw Derived3();}
+
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     char *cp = const_cast<char*>("Hello, C++14 World!\n");
     std::cout << cp << std::endl;
+    
     
     MI mi;
     TRACE(mi.vf());
@@ -92,6 +106,7 @@ int main(int argc, const char * argv[]) {
     TRACE(x.vf());
     TRACE(x.MI::vf());
     std::cout << std::endl;
+    
     
     for (int n = 0; n < 3; n++)
     {
@@ -108,6 +123,20 @@ int main(int argc, const char * argv[]) {
         } catch (const char* s) {
             std::cout << s << " caught\t" << n << std::endl;
         }
+    }
+    std::cout << std::endl;
+    
+    
+    try {
+        f();
+    } catch (Base1 b) {
+        b.what();
+    }
+    
+    try {
+        f();
+    } catch (Base1& b) {
+        b.what();
     }
     std::cout << std::endl;
     
