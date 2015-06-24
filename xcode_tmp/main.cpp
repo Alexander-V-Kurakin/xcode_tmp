@@ -140,5 +140,28 @@ int main(int argc, const char * argv[]) {
     }
     std::cout << std::endl;
     
+    std::cout << typeid(x).name() << std::endl;
+    std::cout << typeid(&x).name() << std::endl;
+    std::cout << typeid(mi).name() << std::endl;
+    std::cout << typeid(MI::Derived1).name() << std::endl;
+    std::cout << typeid(MI::Base).name() << std::endl;
+    std::cout << typeid(X::Base).name() << std::endl;
+    std::cout << std::endl;
+    
+    std::cout << typeid(int).name() << std::endl;
+    std::cout << typeid(int*).name() << std::endl;
+    std::cout << typeid(char).name() << std::endl;
+    std::cout << typeid(12345).name() << std::endl;
+    std::cout << typeid(1.2345).name() << std::endl;
+    std::cout << typeid(1.2345e2).name() << std::endl;
+    std::cout << std::endl;
+    
+    if (typeid(X).before(typeid(Base))) {
+        std::cout << "X before Base" << std::endl;
+    }
+    else
+        std::cout << "X is not before Base" << std::endl;
+    std::cout << std::endl;
+    
     return 0;
 }
