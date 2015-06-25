@@ -13,74 +13,6 @@
 #define TRACE(x) (std::cout << #x << " = " << x << std::endl)
 
 
-template <typename T> void swap( T& x, T& y)
-{
-    T t = x; x = y; y = t;
-}
-
-
-template <typename T>
-class I {
-    T a;
-public:
-    I(T n): a(n){};
-    T get_a() const;
-};
-
-template <typename T>
-T I<T>::get_a() const
-{
-    return a;
-}
-
-
-class Base {
-public:
-    Base(int = 0){std::cout << "Base" << std::endl;}
-    
-    virtual ~Base(){};
-    
-    virtual std::string vf() const = 0;
-};
-
-class Derived1 : virtual public Base {
-public:
-    Derived1() : Base(1){}
-    
-    std::string vf() const throw() {return "Derived1";};
-};
-
-class Derived2 : virtual public Base {
-public:
-    Derived2() : Base(2){}
-    
-    std::string vf() const throw() {return "Derived2";};
-};
-
-class MI : public Derived1, public Derived2 {
-public:
-    MI(){}
-    
-    std::string vf() const throw() {return Derived1::vf();}
-    
-    void ef() throw (const char*) {throw "base class exception";}
-};
-
-class X : public MI {
-public:
-    X(){}
-    
-    std::string vf() const throw() {return Derived2::vf();}
-    
-    void ef(int n)
-    {
-        if (n < 2) throw "const char* exception";
-        else
-            throw n;
-    }
-};
-
-
 class Base1 {
 public:
     virtual void what() const {std::cout << "class Base1" << std::endl;}
@@ -94,37 +26,25 @@ public:
 void f(){throw Derived3();}
 
 
+class Singleton {
+    static Singleton s;
+    Singleton(int x) : i(x){}
+    Singleton(const Singleton&);
+    int i;
+public:
+    static Singleton* instance(){ return &s; }
+    static Singleton& GetHandle(){return s;}
+    int GetValue() const {return i;}
+    void SetValue(int x){i = x;}
+};
+
+Singleton Singleton::s(1);
+
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     char *cp = const_cast<char*>("Hello, C++14 World!\n");
     std::cout << cp << std::endl;
-    
-    
-    MI mi;
-    TRACE(mi.vf());
-    X x;
-    TRACE(x.vf());
-    TRACE(x.MI::vf());
-    std::cout << std::endl;
-    
-    
-    for (int n = 0; n < 3; n++)
-    {
-        try {
-            x.ef(n);
-        } catch (const char* s) {
-            std::cout << s << " caught\t" << n << std::endl;
-        } catch (...) {
-            std::cout << "any other exception caught\t" << n << std::endl;
-        }
-        
-        try {
-            x.MI::ef();
-        } catch (const char* s) {
-            std::cout << s << " caught\t" << n << std::endl;
-        }
-    }
-    std::cout << std::endl;
     
     
     try {
@@ -140,27 +60,13 @@ int main(int argc, const char * argv[]) {
     }
     std::cout << std::endl;
     
-    std::cout << typeid(x).name() << std::endl;
-    std::cout << typeid(&x).name() << std::endl;
-    std::cout << typeid(mi).name() << std::endl;
-    std::cout << typeid(MI::Derived1).name() << std::endl;
-    std::cout << typeid(MI::Base).name() << std::endl;
-    std::cout << typeid(X::Base).name() << std::endl;
-    std::cout << std::endl;
     
-    std::cout << typeid(int).name() << std::endl;
-    std::cout << typeid(int*).name() << std::endl;
-    std::cout << typeid(char).name() << std::endl;
-    std::cout << typeid(12345).name() << std::endl;
-    std::cout << typeid(1.2345).name() << std::endl;
-    std::cout << typeid(1.2345e2).name() << std::endl;
-    std::cout << std::endl;
-    
-    if (typeid(X).before(typeid(Base))) {
-        std::cout << "X before Base" << std::endl;
-    }
-    else
-        std::cout << "X is not before Base" << std::endl;
+    Singleton& s = Singleton::GetHandle();
+    std::cout << s.GetValue() << std::endl;
+    Singleton& s2 = Singleton::GetHandle();
+    s2.SetValue(2);
+    std::cout << s.GetValue() << std::endl;
+    std::cout << Singleton::instance()->GetValue() << std::endl;
     std::cout << std::endl;
     
     return 0;
