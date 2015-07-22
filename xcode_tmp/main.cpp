@@ -49,6 +49,46 @@ Singleton Singleton::s(1);
 int Singleton::j = 0;
 
 
+class F {
+    std::string s = "class F";
+    int a;
+public:
+    F(){
+        a = 0;
+        std::cout << s << " constructor is called" << std::endl;
+    }
+    
+    virtual void set_a(int n){
+        a = n+111;
+        std::cout << s << ": " << a << std::endl;
+    }
+    
+    int get_a() const {return a;}
+};
+
+
+class G : public F {
+    std::string s = "class G";
+    int a;
+    
+public:
+    G(){
+        a = 4000;
+        std::cout << s << " constructor is called" << std::endl;
+    }
+    
+    void set_a(int n){
+        a = n+222;
+        std::cout << s << ": " << a << std::endl;
+    }
+    
+    int get_a() const {return a;}
+};
+
+
+void f1(F& f){f.set_a(1000);}
+
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     char *cp = const_cast<char*>("Hello, C++14 World!\n");
@@ -87,6 +127,25 @@ int main(int argc, const char * argv[]) {
     
     Derived3 d3;
     TRACE(ff(d3));
+    std::cout << std::endl;
+    
+    F f;
+    std::cout << std::endl;
+    
+    std::unique_ptr<std::string[]> ps(new std::string[2]);
+    ps[1] = "unique_ptr is used";
+    std::unique_ptr<int64_t[]> pi(new int64_t[2]);
+    pi[1] = 100;
+    
+    G g;
+    std::cout << std::endl;
+    std::cout << ps[1] << "\t" << pi[1] << std::endl;
+    std::cout << std::endl;
+    
+    f1(g);
+    TRACE(f.get_a());
+    TRACE(g.F::get_a());
+    TRACE(g.get_a());
     std::cout << std::endl;
     
     return 0;
