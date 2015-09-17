@@ -24,11 +24,21 @@ public:
     void what() const {std::cout << "class Derived3" << std::endl;}
     
     friend int ff(Derived3 &);
+    
+    int j = 3;
 };
 
 void f(){throw Derived3();}
 
-int ff(Derived3 &d3){return d3.i;}
+int ff(Derived3 &d3)
+{
+    void (Derived3::*fptr)() const = &Derived3::what;
+    (d3.*fptr)();
+    
+    int (Derived3::*vptr) = &Derived3::j;
+    
+    return d3.i + d3.*vptr;
+}
 
 
 class Singleton {
