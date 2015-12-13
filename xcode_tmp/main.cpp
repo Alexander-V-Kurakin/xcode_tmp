@@ -98,6 +98,8 @@ public:
 
 void f1(F& f){f.set_a(1000);}
 
+int* i(int **p){ return *p; }
+
 
 int main(int argc, const char * argv[]) {
     // insert code here...
@@ -157,6 +159,23 @@ int main(int argc, const char * argv[]) {
     TRACE(g.F::get_a());
     TRACE(g.get_a());
     std::cout << std::endl;
+    
+    int b = 5, c = 9;
+    int *p1 = &b, *p2 = &c, **p3;
+    
+    p1 = p2;
+    p3 = &p2;
+    
+    TRACE(*p1);
+    TRACE(p1);
+    TRACE(*p2);
+    TRACE(p2);
+    TRACE(*p3);
+    TRACE(**p3);
+    TRACE(p3);
+    
+    TRACE(i(&p1));
+    TRACE(*(i(&p1)));
     
     return 0;
 }
