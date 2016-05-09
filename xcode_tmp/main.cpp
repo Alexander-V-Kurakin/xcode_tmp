@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 MUC-StarChild-Mercury. All rights reserved.
 //
 
-//  C++ access modifiers:
+//  C++ access modifiers/specifiers:
 //
-//              All users   Derived classes     Class' own users
+//              All users   Derived classes     Class' own users/members
 //  Public          x               x                   x
 //  Protected                       x                   x
 //  Private                                             x
@@ -186,3 +186,44 @@ int main(int argc, const char * argv[]) {
     
     return 0;
 }
+
+/*  Output:
+ 
+ Hello, C++14 World!
+ 
+ 8
+ 24	C:\A\B\C\D\file.txt()
+ 
+ class Base1
+ class Derived3
+ 
+ 1	0
+ 2
+ 2
+ 
+ ff(d3) = class Derived3
+ 47
+ 
+ class F constructor is called
+ 
+ class F constructor is called
+ class G constructor is called
+ 
+ unique_ptr is used	100
+ 
+ class G: 1222
+ f.get_a() = 0
+ g.F::get_a() = 0
+ g.get_a() = 1222
+ 
+ *p1 = 9
+ p1 = 0x7fff5fbff168
+ *p2 = 9
+ p2 = 0x7fff5fbff168
+ *p3 = 0x7fff5fbff168
+ **p3 = 9
+ p3 = 0x7fff5fbff158
+ i(&p1) = 0x7fff5fbff168
+ *(i(&p1)) = 9
+ Program ended with exit code: 0
+*/
