@@ -6,6 +6,13 @@
 //  Copyright (c) 2014 MUC-StarChild-Mercury. All rights reserved.
 //
 
+//  C++ access modifiers:
+//
+//              All users   Derived classes     Class' own users
+//  Public          x               x                   x
+//  Protected                       x                   x
+//  Private                                             x
+
 #include <iostream>
 #include <iomanip>
 #include <string>
