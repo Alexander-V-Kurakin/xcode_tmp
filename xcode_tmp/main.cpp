@@ -113,6 +113,24 @@ int main(int argc, const char * argv[]) {
     char *cp = const_cast<char*>("Hello, C++14 World!\n");
     std::cout << cp << std::endl;
     
+    {
+        int a = 0, b = 1, c = 2, d = 3, e = 4;
+        
+        // static_cast<void> is used to suppress the warnings
+        // original expression is a = (++a, ++b, ++c, ++d, ++e);
+        
+        a = (static_cast<void>(++a), static_cast<void>(++b), static_cast<void>(++c), static_cast<void>(++d), ++e);
+        std::cout << a << " " << b << " " << c << " " << d << " " << e << std::endl;
+        
+        // static_cast<void> is used to suppress the warnings
+        // original expression is a = ++a, ++b, ++c, ++d, ++e;
+        // that will be evaluated to (a = ++a), ++b, ++c, ++d, ++e;
+        
+        a = 0;
+        static_cast<void>(a = ++a), static_cast<void>(++b), static_cast<void>(++c), static_cast<void>(++d), ++e;
+        std::cout << a << " " << b << " " << c << " " << d << " " << e << std::endl << std::endl;
+    }
+    
     uint64_t a;
     std::string raw_string = R"(C:\A\B\C\D\file.txt())";
     
@@ -190,40 +208,43 @@ int main(int argc, const char * argv[]) {
 /*  Output:
  
  Hello, C++14 World!
- 
+
+ 5 2 3 4 5
+ 1 3 4 5 6
+
  8
- 24	C:\A\B\C\D\file.txt()
- 
+ 24    C:\A\B\C\D\file.txt()
+
  class Base1
  class Derived3
- 
- 1	0
+
+ 1    0
  2
  2
- 
+
  ff(d3) = class Derived3
  47
- 
+
  class F constructor is called
- 
+
  class F constructor is called
  class G constructor is called
- 
- unique_ptr is used	100
- 
+
+ unique_ptr is used    100
+
  class G: 1222
  f.get_a() = 0
  g.F::get_a() = 0
  g.get_a() = 1222
- 
+
  *p1 = 9
- p1 = 0x7fff5fbff168
+ p1 = 0x7ffeefbff348
  *p2 = 9
- p2 = 0x7fff5fbff168
- *p3 = 0x7fff5fbff168
+ p2 = 0x7ffeefbff348
+ *p3 = 0x7ffeefbff348
  **p3 = 9
- p3 = 0x7fff5fbff158
- i(&p1) = 0x7fff5fbff168
+ p3 = 0x7ffeefbff338
+ i(&p1) = 0x7ffeefbff348
  *(i(&p1)) = 9
  Program ended with exit code: 0
 */
