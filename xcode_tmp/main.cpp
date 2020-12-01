@@ -17,18 +17,20 @@
 #include <iomanip>
 #include <string>
 
-#define TRACE(x) (std::cout << #x << " = " << x << std::endl)
+using namespace std;
+
+#define TRACE(x) (cout << #x << " = " << x << endl)
 
 
 class Base1 {
 public:
-    virtual void what() const {std::cout << "class Base1" << std::endl;}
+    virtual void what() const {cout << "class Base1" << endl;}
 };
 
 class Derived3 : public Base1 {
     int i = 44;
 public:
-    void what() const {std::cout << "class Derived3" << std::endl;}
+    void what() const {cout << "class Derived3" << endl;}
     
     friend int ff(Derived3 &);
     
@@ -67,40 +69,81 @@ int Singleton::j = 0;
 
 
 class F {
-    std::string s = "class F";
+    string s = "class F";
     int a;
 public:
     F(){
         a = 0;
-        std::cout << s << " constructor is called" << std::endl;
+        cout << s << " constructor is called" << endl;
     }
     
     virtual void set_a(int n){
         a = n+111;
-        std::cout << s << ": " << a << std::endl;
+        cout << s << ": " << a << endl;
     }
     
     int get_a() const {return a;}
 };
 
 
+class G;
+
+struct Y {
+    string f(G*);
+};
+
+struct K {
+    string f(G*);
+};
+
+
 class G : public F {
-    std::string s = "class G";
+    string s = "class G", s1 = "Class G";
     int a;
     
 public:
     G(){
         a = 4000;
-        std::cout << s << " constructor is called" << std::endl;
+        cout << s << " constructor is called" << endl;
     }
     
     void set_a(int n){
         a = n+222;
-        std::cout << s << ": " << a << std::endl;
+        cout << s << ": " << a << endl;
     }
     
     int get_a() const {return a;}
+    string get_s1(){return s1;}
+    
+    friend string Y::f(G*);
+    friend string f2(void);
+    friend string f2(G*);
+    friend struct K;
 };
+
+string Y::f(G* g)
+{
+    return g->s1 = "friend Y::f(G*) is called";
+}
+
+string f2(void)
+{
+    G g;
+    
+    TRACE(g.get_s1());
+    
+    return g.s1 = "friend f2(void) is called";
+}
+
+string f2(G* g)
+{
+    return g->s1 = "friend f2(G* g) is called";
+}
+
+string K::f(G* g)
+{
+    return g->s1 = "friend K::f(G*) is called";
+}
 
 
 void f1(F& f){f.set_a(1000);}
@@ -111,7 +154,7 @@ int* i(int **p){ return *p; }
 int main(int argc, const char * argv[]) {
     // insert code here...
     char *cp = const_cast<char*>("Hello, C++14 World!\n");
-    std::cout << cp << std::endl;
+    cout << cp << endl;
     
     {
         int a = 0, b = 1, c = 2, d = 3, e = 4;
@@ -120,7 +163,7 @@ int main(int argc, const char * argv[]) {
         // original expression is a = (++a, ++b, ++c, ++d, ++e);
         
         a = (static_cast<void>(++a), static_cast<void>(++b), static_cast<void>(++c), static_cast<void>(++d), ++e);
-        std::cout << a << " " << b << " " << c << " " << d << " " << e << std::endl;
+        cout << a << " " << b << " " << c << " " << d << " " << e << endl;
         
         // static_cast<void> is used to suppress the warnings
         // original expression is a = ++a, ++b, ++c, ++d, ++e;
@@ -128,15 +171,15 @@ int main(int argc, const char * argv[]) {
         
         a = 0;
         static_cast<void>(a = ++a), static_cast<void>(++b), static_cast<void>(++c), static_cast<void>(++d), ++e;
-        std::cout << a << " " << b << " " << c << " " << d << " " << e << std::endl << std::endl;
+        cout << a << " " << b << " " << c << " " << d << " " << e << endl << endl;
     }
     
     uint64_t a;
-    std::string raw_string = R"(C:\A\B\C\D\file.txt())";
+    string raw_string = R"(C:\A\B\C\D\file.txt())";
     
-    std::cout << sizeof a << std::endl;
-    std::cout << sizeof raw_string << "\t" << raw_string << std::endl;
-    std::cout << std::endl;
+    cout << sizeof a << endl;
+    cout << sizeof raw_string << "\t" << raw_string << endl;
+    cout << endl;
     
     
     try {
@@ -150,40 +193,53 @@ int main(int argc, const char * argv[]) {
     } catch (Base1& b) {
         b.what();
     }
-    std::cout << std::endl;
+    cout << endl;
     
     
     Singleton& s = Singleton::GetHandle();
-    std::cout << s.GetValue() << "\t" << s.GetValue_j() << std::endl;
+    cout << s.GetValue() << "\t" << s.GetValue_j() << endl;
     
     Singleton& s2 = Singleton::GetHandle();
     s2.SetValue(2);
-    std::cout << s.GetValue() << std::endl;
-    std::cout << Singleton::instance()->GetValue() << std::endl;
-    std::cout << std::endl;
+    cout << s.GetValue() << endl;
+    cout << Singleton::instance()->GetValue() << endl;
+    cout << endl;
     
     Derived3 d3;
     TRACE(ff(d3));
-    std::cout << std::endl;
+    cout << endl;
     
     F f;
-    std::cout << std::endl;
+    cout << endl;
     
-    std::unique_ptr<std::string[]> ps(new std::string[2]);
+    unique_ptr<string[]> ps(new string[2]);
     ps[1] = "unique_ptr is used";
-    std::unique_ptr<int64_t[]> pi(new int64_t[2]);
+    unique_ptr<int64_t[]> pi(new int64_t[2]);
     pi[1] = 100;
     
     G g;
-    std::cout << std::endl;
-    std::cout << ps[1] << "\t" << pi[1] << std::endl;
-    std::cout << std::endl;
+    cout << endl;
+    cout << ps[1] << "\t" << pi[1] << endl;
+    cout << endl;
     
     f1(g);
     TRACE(f.get_a());
     TRACE(g.F::get_a());
     TRACE(g.get_a());
-    std::cout << std::endl;
+    cout << endl;
+    
+    Y y;
+    TRACE(g.get_s1());
+    TRACE(y.f(&g));
+    TRACE(g.get_s1());
+    cout << endl;
+    TRACE(f2());
+    TRACE(f2(&g));
+    cout << endl;
+    K k;
+    TRACE(k.f(&g));
+    TRACE(g.get_s1());
+    cout << endl;
     
     int b = 5, c = 9;
     int *p1 = &b, *p2 = &c, **p3;
@@ -237,14 +293,27 @@ int main(int argc, const char * argv[]) {
  g.F::get_a() = 0
  g.get_a() = 1222
 
+ g.get_s1() = Class G
+ y.f(&g) = friend Y::f(G*) is called
+ g.get_s1() = friend Y::f(G*) is called
+
+ f2() = class F constructor is called
+ class G constructor is called
+ g.get_s1() = Class G
+ friend f2(void) is called
+ f2(&g) = friend f2(G* g) is called
+
+ k.f(&g) = friend K::f(G*) is called
+ g.get_s1() = friend K::f(G*) is called
+
  *p1 = 9
- p1 = 0x7ffeefbff348
+ p1 = 0x7ffeefbff308
  *p2 = 9
- p2 = 0x7ffeefbff348
- *p3 = 0x7ffeefbff348
+ p2 = 0x7ffeefbff308
+ *p3 = 0x7ffeefbff308
  **p3 = 9
- p3 = 0x7ffeefbff338
- i(&p1) = 0x7ffeefbff348
+ p3 = 0x7ffeefbff2f8
+ i(&p1) = 0x7ffeefbff308
  *(i(&p1)) = 9
  Program ended with exit code: 0
 */
