@@ -114,12 +114,30 @@ public:
     
     int get_a() const {return a;}
     string get_s1(){return s1;}
+    string get_s(){return s;}
     
     friend string Y::f(G*);
     friend string f2(void);
     friend string f2(G*);
     friend struct K;
+    
+    struct L;           // The nested structure has to be declared first
+    friend struct L;    // Then, it has to be declared as friend
+    struct L {          // Then only the structure has to be defined
+    private:
+        G* g;
+        string l = "Nested structure";
+    public:
+        string get_l(void){return l;};
+        string get_sG(G* g){return g->get_s();};
+        int get_aG(G* g);
+    };
 };
+
+int G::L::get_aG(G* g)
+{
+    return g->get_a();
+}
 
 string Y::f(G* g)
 {
@@ -241,6 +259,12 @@ int main(int argc, const char * argv[]) {
     TRACE(g.get_s1());
     cout << endl;
     
+    G::L l;                 // Nested structure is a separate object
+    TRACE(l.get_sG(&g));
+    TRACE(l.get_l());
+    TRACE(l.get_aG(&g));
+    cout << endl;
+    
     int b = 5, c = 9;
     int *p1 = &b, *p2 = &c, **p3;
     
@@ -306,14 +330,18 @@ int main(int argc, const char * argv[]) {
  k.f(&g) = friend K::f(G*) is called
  g.get_s1() = friend K::f(G*) is called
 
+ l.get_sG(&g) = class G
+ l.get_l() = Nested structure
+ l.get_aG(&g) = 1222
+
  *p1 = 9
- p1 = 0x7ffeefbff308
+ p1 = 0x7ffeefbff2b8
  *p2 = 9
- p2 = 0x7ffeefbff308
- *p3 = 0x7ffeefbff308
+ p2 = 0x7ffeefbff2b8
+ *p3 = 0x7ffeefbff2b8
  **p3 = 9
- p3 = 0x7ffeefbff2f8
- i(&p1) = 0x7ffeefbff308
+ p3 = 0x7ffeefbff2a8
+ i(&p1) = 0x7ffeefbff2b8
  *(i(&p1)) = 9
  Program ended with exit code: 0
 */
