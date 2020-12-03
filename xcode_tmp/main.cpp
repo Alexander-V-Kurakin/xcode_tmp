@@ -132,7 +132,38 @@ public:
         string get_sG(G* g){return g->get_s();};
         int get_aG(G* g);
     };
+    
+private:
+    struct M;           // Declaration only, implementation is hidden
+    M* smile;
+    
+public:
+    int init(int x);
+    string cleanup(void);
 };
+
+
+struct G::M             // Implementation
+{
+    int i = 0;
+};
+
+int G::init(int x)
+{
+    smile = new M;
+    
+    TRACE(smile->i);
+    
+    return smile->i = x;
+}
+
+string G::cleanup(void)
+{
+    delete smile;
+    
+    return "G::cleanup(void) is called";
+}
+
 
 int G::L::get_aG(G* g)
 {
@@ -265,6 +296,10 @@ int main(int argc, const char * argv[]) {
     TRACE(l.get_aG(&g));
     cout << endl;
     
+    TRACE(g.init(12345));
+    TRACE(g.cleanup());
+    cout << endl;
+    
     int b = 5, c = 9;
     int *p1 = &b, *p2 = &c, **p3;
     
@@ -334,14 +369,18 @@ int main(int argc, const char * argv[]) {
  l.get_l() = Nested structure
  l.get_aG(&g) = 1222
 
+ g.init(12345) = smile->i = 0
+ 12345
+ g.cleanup() = G::cleanup(void) is called
+
  *p1 = 9
- p1 = 0x7ffeefbff2b8
+ p1 = 0x7ffeefbff298
  *p2 = 9
- p2 = 0x7ffeefbff2b8
- *p3 = 0x7ffeefbff2b8
+ p2 = 0x7ffeefbff298
+ *p3 = 0x7ffeefbff298
  **p3 = 9
- p3 = 0x7ffeefbff2a8
- i(&p1) = 0x7ffeefbff2b8
+ p3 = 0x7ffeefbff288
+ i(&p1) = 0x7ffeefbff298
  *(i(&p1)) = 9
  Program ended with exit code: 0
 */
