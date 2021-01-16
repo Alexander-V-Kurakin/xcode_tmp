@@ -200,6 +200,31 @@ void f1(F& f){f.set_a(1000);}
 int* i(int **p){ return *p; }
 
 
+class Stack {
+    enum { size = 100 };
+    int stack[ size ];
+    int top;
+public:
+    Stack() : top( 0 ) {}
+    
+    void push( int i ) { stack[ top++ ] = i; }
+    int pop() { return stack[ --top ];
+}
+    
+  friend class Iterator;
+};
+
+class Iterator {
+    Stack& s;
+    int index;
+public:
+    Iterator( Stack& is ) : s( is ), index( 0 ) {}
+    
+    int operator++() { return s.stack[ ++index ]; }         // Prefix
+    int operator++( int ) { return s.stack[ index++ ]; }    // Postfix
+};
+
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     char *cp = const_cast<char*>("Hello, C++14 World!\n");
@@ -316,6 +341,28 @@ int main(int argc, const char * argv[]) {
     
     TRACE(i(&p1));
     TRACE(*(i(&p1)));
+    cout << endl;
+    
+    int& rd = b;
+    TRACE(&rd);
+    TRACE(sizeof(long int));
+    TRACE(sizeof(p1));
+    TRACE(sizeof(&rd - p1));
+    TRACE(*(&rd));
+    TRACE(rd);
+    TRACE(b);
+    cout << endl;
+    
+
+    Stack stack;
+    for( int i = 0; i < 10; i++ ) stack.push(i);
+    Iterator iterator(stack);
+    for( int j = 0; j < 10; j++ ) cout << iterator++ << " ";
+    cout << endl;
+    for( int i = 0; i < 11; i++ ) stack.push(i);
+    for( int j = 0; j < 10; j++ ) cout << ++iterator << " ";
+    cout << endl;
+    
     
     return 0;
 }
@@ -382,5 +429,16 @@ int main(int argc, const char * argv[]) {
  p3 = 0x7ffeefbff288
  i(&p1) = 0x7ffeefbff298
  *(i(&p1)) = 9
+
+ &rd = 0x7ffeefbff29c
+ sizeof(long int) = 8
+ sizeof(p1) = 8
+ sizeof(&rd - p1) = 8
+ *(&rd) = 5
+ rd = 5
+ b = 5
+
+ 0 1 2 3 4 5 6 7 8 9
+ 1 2 3 4 5 6 7 8 9 10
  Program ended with exit code: 0
 */
