@@ -210,18 +210,50 @@ public:
     void push( int i ) { stack[ top++ ] = i; }
     int pop() { return stack[ --top ];
 }
-    
-  friend class Iterator;
-};
+    class iterator;         // Nested iterator
+    friend class iterator;
+    class iterator {
+        Stack& s;
+        int index;
+    public:
+        iterator( Stack& is ) : s( is ), index( 0 ) {}
+        
+        int operator++() { return s.stack[ ++index ]; }         // Prefix
+        int operator++( int ) { return s.stack[ index++ ]; }    // Postfix
+        
+        iterator& operator= ( iterator& rv ) {
+            index = rv.index;
+            return *this;
+        }
+        
+        // To select the current element, the operator* can be used
+        // instead of call to current(), which makes the iterator
+        // look more like a pointer and is a common practice
+        int operator*() const { return s.stack[index];}
+        
+        iterator& operator+= ( int rv ) {
+            index += rv;
+            return *this;
+        }
 
-class Iterator {
-    Stack& s;
-    int index;
-public:
-    Iterator( Stack& is ) : s( is ), index( 0 ) {}
-    
-    int operator++() { return s.stack[ ++index ]; }         // Prefix
-    int operator++( int ) { return s.stack[ index++ ]; }    // Postfix
+        bool operator== ( const iterator& rv ) const {
+            return index == rv.index;
+        }
+
+        bool operator!= ( const iterator& rv ) const {
+            return index != rv.index;
+        }
+
+        iterator begin() { return iterator( *this ); }
+        
+        int current() const { return s.stack[ index ]; }
+        void set( int i ) { index = i; };
+        
+        friend ostream& operator<< ( ostream& os, const iterator& it ) {
+            return os << it.current();
+//            return os << *it;         // see operator* definition
+        }
+    };
 };
 
 
@@ -353,17 +385,45 @@ int main(int argc, const char * argv[]) {
     TRACE(b);
     cout << endl;
     
-
+    
     Stack stack;
-    for( int i = 0; i < 10; i++ ) stack.push(i);
-    Iterator iterator(stack);
-    for( int j = 0; j < 10; j++ ) cout << iterator++ << " ";
+    for( int i = 0; i < 100; i++ ) stack.push( i );
+    Stack::iterator it = Stack::iterator( stack ).begin();
+    for( int j = 0; j < 10; j++ ) cout << it++ << "\t";
     cout << endl;
-    for( int i = 0; i < 11; i++ ) stack.push(i);
-    for( int j = 0; j < 10; j++ ) cout << ++iterator << " ";
+    
+    TRACE( it.current() );
+    
+    it += -10;
+    for( int j = 0; j < 10; j++ ) cout << ++it << "\t";
+    cout << endl;
+    
+    it += 5;
+    for( int j = 0; j < 10; j++ ) cout << it++ << "\t";
+    cout << endl;
+    
+    it.set( 40 );
+    cout << "it.set( 40 )" << endl;
+    for( int j = 0; j < 10; j++ ) cout << it++ << "\t";
     cout << endl;
     
     
+    Stack::iterator start = Stack::iterator( stack ).begin();
+    Stack::iterator end = Stack::iterator( stack ).begin();
+    
+    it.set( 0 );
+    start += 50;
+    end += 60;
+    
+    while ( start != end ) cout << start++ << "\t";
+    cout << endl;
+    
+    start = end;
+    while ( start != end ) cout << start++ << "\t";
+    if ( start == end ) cout << "start = end";
+    cout << endl;
+    
+
     return 0;
 }
 
@@ -438,7 +498,13 @@ int main(int argc, const char * argv[]) {
  rd = 5
  b = 5
 
- 0 1 2 3 4 5 6 7 8 9
- 1 2 3 4 5 6 7 8 9 10
+ 0    1    2    3    4    5    6    7    8    9
+ it.current() = 10
+ 1    2    3    4    5    6    7    8    9    10
+ 15    16    17    18    19    20    21    22    23    24
+ it.set( 40 )
+ 40    41    42    43    44    45    46    47    48    49
+ 50    51    52    53    54    55    56    57    58    59
+ start = end
  Program ended with exit code: 0
 */
