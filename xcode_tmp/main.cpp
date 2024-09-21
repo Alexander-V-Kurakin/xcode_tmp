@@ -223,8 +223,8 @@ public:
     Stack() : top( 0 ) {}
     
     void push( int i ) { stack[ top++ ] = i; }
-    int pop() { return stack[ --top ];
-}
+    int pop() { return stack[ --top ]; }
+    
     class iterator;         // Nested iterator
     friend class iterator;
     class iterator {
@@ -271,6 +271,15 @@ public:
     };
 };
 
+class H {
+public:
+    // There is one chunk of storage for a static data member, no matter how objects
+    // of that class are created. All objects share the same static storage space for
+    // that data member, so it's a way for them to 'communicate to each other'.
+    
+    int get() { static int static_val = 1; return static_val++; }
+};
+
 
 int main(int argc, const char * argv[]) {
     // insert code here...
@@ -283,6 +292,13 @@ int main(int argc, const char * argv[]) {
 //    TRACE(__clang_version__);
     std::cout << "__cplusplus\t\t\t" << __cplusplus << std::endl;
     std::cout << "__clang_version__\t" << __clang_version__ << std::endl << std::endl;
+    
+    H h1, h2, h3;
+    TRACE(h1.get());
+    TRACE(h2.get());
+    TRACE(h3.get());
+    cout << endl;
+    
     
     {
         int a = 0, b = 1, c = 2, d = 3, e = 4;
