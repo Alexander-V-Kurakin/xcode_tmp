@@ -280,6 +280,7 @@ public:
     int get() { static int static_val = 1; return static_val++; }
 };
 
+void inc( int*& rp /* Reference pointer */ ) { rp++; }
 
 int main(int argc, const char * argv[]) {
     // insert code here...
@@ -299,6 +300,17 @@ int main(int argc, const char * argv[]) {
     TRACE(h3.get());
     cout << endl;
     
+    // Reference to constant. Reference cannot be NULL, and must be connected
+    // to a legitimate piece of storage.
+    const int& r = 12;
+    TRACE(r);
+    cout << endl;
+    
+    int* p = 0;
+    TRACE(p);
+    inc( p );       // The pointer is incremented, not what it points to.
+    TRACE(p);
+    cout << endl;
     
     {
         int a = 0, b = 1, c = 2, d = 3, e = 4;
@@ -471,6 +483,15 @@ int main(int argc, const char * argv[]) {
  __cplusplus            201703
  __clang_version__    12.0.0 (clang-1200.0.32.29)
 
+ h1.get() = 1
+ h2.get() = 2
+ h3.get() = 3
+
+ r = 12
+
+ p = 0x0
+ p = 0x4
+
  5 2 3 4 5
  1 3 4 5 6
 
@@ -521,16 +542,16 @@ int main(int argc, const char * argv[]) {
  g.cleanup() = G::cleanup(void) is called
 
  *p1 = 9
- p1 = 0x7ffeefbff208
+ p1 = 0x7ffeefbff268
  *p2 = 9
- p2 = 0x7ffeefbff208
- *p3 = 0x7ffeefbff208
+ p2 = 0x7ffeefbff268
+ *p3 = 0x7ffeefbff268
  **p3 = 9
- p3 = 0x7ffeefbff1f8
- i(&p1) = 0x7ffeefbff208
+ p3 = 0x7ffeefbff258
+ i(&p1) = 0x7ffeefbff268
  *(i(&p1)) = 9
 
- &rd = 0x7ffeefbff20c
+ &rd = 0x7ffeefbff26c
  sizeof(long int) = 8
  sizeof(p1) = 8
  sizeof(&rd - p1) = 8
