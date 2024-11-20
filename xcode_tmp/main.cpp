@@ -488,6 +488,8 @@ int main(int argc, const char * argv[]) {
  __cplusplus            201703
  __clang_version__    12.0.0 (clang-1200.0.32.29)
 
+ sizeof( Base1 ) = 16
+
  h1.get() = 1
  h2.get() = 2
  h3.get() = 3
@@ -547,16 +549,16 @@ int main(int argc, const char * argv[]) {
  g.cleanup() = G::cleanup(void) is called
 
  *p1 = 9
- p1 = 0x7ffeefbff268
+ p1 = 0x7ffeefbff1c8
  *p2 = 9
- p2 = 0x7ffeefbff268
- *p3 = 0x7ffeefbff268
+ p2 = 0x7ffeefbff1c8
+ *p3 = 0x7ffeefbff1c8
  **p3 = 9
- p3 = 0x7ffeefbff258
- i(&p1) = 0x7ffeefbff268
+ p3 = 0x7ffeefbff1b8
+ i(&p1) = 0x7ffeefbff1c8
  *(i(&p1)) = 9
 
- &rd = 0x7ffeefbff26c
+ &rd = 0x7ffeefbff1cc
  sizeof(long int) = 8
  sizeof(p1) = 8
  sizeof(&rd - p1) = 8
