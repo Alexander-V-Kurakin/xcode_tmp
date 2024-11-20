@@ -38,8 +38,10 @@ using namespace std;
 //}
 
 class Base1 {
+    int not_used;                                                   // 8 bytes int
 public:
-    virtual void what() const {cout << "class Base1" << endl;}
+    virtual void what() const {cout << "class Base1" << endl;}      // 8 bytes VPTR to VTABLE
+    void what_non_virtual() const {cout << "class Base1" << endl;}
 };
 
 class Derived3 : public Base1 {
@@ -293,6 +295,9 @@ int main(int argc, const char * argv[]) {
 //    TRACE(__clang_version__);
     std::cout << "__cplusplus\t\t\t" << __cplusplus << std::endl;
     std::cout << "__clang_version__\t" << __clang_version__ << std::endl << std::endl;
+    
+    TRACE(sizeof( Base1 ));
+    cout << endl;
     
     H h1, h2, h3;
     TRACE(h1.get());
